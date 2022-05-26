@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import axios from "axios";
 
-const EditMovieForm = (props) => {
+const AddMovieForm = (props) => {
   const { push } = useHistory();
   const { id } = useParams();
 
@@ -26,23 +26,24 @@ const EditMovieForm = (props) => {
     });
   };
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:9000/api/movies/${id}`)
-      .then((res) => {
-        // console.log(res.data);
-        setMovie(res.data);
-      })
-      .catch((err) => console.log(err.response));
-  }, []);
+  //   useEffect(() => {
+  //     axios
+  //       .get(`http://localhost:9000/api/movies/${id}`)
+  //       .then((res) => {
+  //         // console.log(res.data);
+  //         setMovie(res.data);
+  //       })
+  //       .catch((err) => console.log(err.response));
+  //   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("movie: ", movie);
     axios
-      .put(`http://localhost:9000/api/movies/${id}`, movie)
+      .post(`http://localhost:9000/api/movies`, movie)
       .then((res) => {
-        setMovies(res.data);
-        push(`/movies/${movie.id}`);
+        props.setMovies(res.data);
+        push(`/movies`);
       })
       .catch((err) => {
         console.log(err);
@@ -57,7 +58,7 @@ const EditMovieForm = (props) => {
         <form onSubmit={handleSubmit}>
           <div className="modal-header">
             <h4 className="modal-title">
-              Editing <strong>{movie.title}</strong>
+              Adding <strong>{movie.title}</strong>
             </h4>
           </div>
           <div className="modal-body">
@@ -123,4 +124,4 @@ const EditMovieForm = (props) => {
   );
 };
 
-export default EditMovieForm;
+export default AddMovieForm;
